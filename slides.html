@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>DSCI 521 - Lecture 3</title>
+    <title>DSCI 521 - Lecture 4</title>
     <meta charset="utf-8" />
     <meta name="author" content="MDS 2021/22" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -47,8 +47,8 @@ class: middle, center
 class: bottom
 
 .bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
-### DSCI 521 - Lecture 3
-### **Branches, forks, and streams... Welcome to the Git nature walk!**
+### DSCI 521 - Lecture 4
+### **Time travelling with git reset, and pattern matching with regex**
 
  .large[#### Computing Platforms for Data Science - UBC MDS 2021/22
 ]]
@@ -56,144 +56,326 @@ class: bottom
 
 ---
 
-## Lecture 3
+## Lecture 4
 
-1 **Develop a feature on a branch** in a Git repo.
-
---
-
-2. **Merge** the feature branch with the master branch.
+1. Use git reset to move a branch back in the commit history.
 
 --
 
-3. Create a **fork** of an existing GitHub repo.
-
---
-
-4. Open a **pull request** from your forked repo to the upstream repo
+2. Precisely match specific sequences of text strings using regex.
 
 
 ---
-
-
-class: center, middle
-
-&lt;img src="img/obj2.png" width="900" style="display: block; margin: auto;" /&gt;
-
-
-.footnote[[images: Unsplash](https://unsplash.com)]
----
-
 
 class: center, middle, inverse
 
-# BRANCHES
-separate work 
+# TIME TRAVELLING
+### with _git reset_
 
 ---
 
-## Why to use them?
+### Refer to a commit 
 
-* You don't want the repository's default branch to be updated with every commit of a half-finished feature.
+Commit ID or SHA-1 hash
 
-* When features are completed, their branches will be merged into the main branch, often through a "pull request" where code is reviewed before it is merged. 
+```bash
+commit b22d6421363c7b82e2b88b0b5f1f25edca703303
 
+commit b22d
+```
 
+--
 
+## `git log --oneline` 
 
----
-
-
-&lt;img src="img/branches-house-analogy.png" width="500" style="display: block; margin: auto;" /&gt;
-
-
-&lt;img src="img/house.jfif" width="500" style="display: block; margin: auto;" /&gt;
-
-.footnote[[house image: Unsplash](https://unsplash.com)]
-
----
-
-###
-
-`HEAD -&gt; main`
-
-**main** is your default local branch
-
-**HEAD** is where you currently (on the main branch)  
-
-
-
-&gt; You are on the main branch
+&lt;img src="img/gitlogid.png" width="700" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-###
+### Move to a previous commit
 
-`origin/main`
+```bash
+git reset &lt;commit id&gt;
+```
 
-**origin** is a nickname for your remote repo on GitHub
+**(1) This command changes the commit history**
 
-**origin/main** is the main branch on your GitHub repo
-
-
-&gt; You Github repo is on the main branch
-
-.footnote[_Note: In older repos `main` branch was called `master` branch_]
+.footnote[[Git Docs - Reset, restore and revert](https://git-scm.com/docs/git)]
 
 ---
 
-`origin/HEAD`
+### What happened to the changes? 
 
-You don't need to care about origin/HEAD, it just point to the default remote branch, 
-which will always be main unless you mess around with the settings on the GitHub webpage.
+**(2) You can edit the changes**
 
-.footnote[_Note: In older repos `main` branch was called `master` branch_]
+We could now make any modification we wish and then commit again 
 
----
-
-
-## Now all together
-
-Now let's see what happens when we make a commit locally
+&lt;img src="img/reset.png" width="700" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 
-class: center, inverse, middle
+### What if we want to discard the changes instead of moving them to the working area?
 
-# How do we create a branch?
+```bash
+git reset --hard &lt;sha&gt;
+```
+It will not show us any message, since the changes are not unstaged, they are **discarded**.
+
+---
+
+class: middle, center, inverse
+
+## SYNCING WITH A REMOTE AFTER RESETTING
+
+
+---
+
+### Git push
+
+##### Git will refuse to push changes when the remote is ahead of the local branch.
+
+
+&lt;img src="img/gitpusherror.png" width="700" style="display: block; margin: auto;" /&gt;
+
+To override this warning and force git to push to the remote
+we can use the **-f/--force** flag.
+---
+
+## Danger Zone
+
+```bash
+git push -f/--force 
+```
+
+--
+- Should never do this on the `main` branch of a repository that you **share with collaborators** unless you have all discussed this
+
+--
+
+- Everyone else who is using this repository are now **out of sync** with the `main` branch, since you have reset master to a previous state
+
+--
+
+**Safer**
+: If you are working alone and you know what you are doing
+
+
+---
+class: middle, center, inverse
+ 
+# INTRODUCTION TO 
+# REGULAR EXPRESIONS 
+### regex
+
+---
+
+# .*
+
+#### A regular expression, often abbreviated to **regex**, is a method of using a sequence of characters to define a search to match strings, i.e. “find and replace”-like operations. 
+
+
+In computation, a ‘string’ is a contiguous sequence of symbols or values. For example, a word, a date, a set of numbers (e.g., a phone number), or an alphanumeric value (e.g., an identifier).
+
+.footnote[[Library Carpentries](https://librarycarpentry.org/lc-data-intro/01-regular-expressions/)]
+---
+
+## JupyterLab and VS Code have built in regex functionality 
+
+#### VSCode
+
+
+&lt;img src="img/regex.png" width="400" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+## The square brackets: []
+
+If you want to specify the set of possible characters you can use square brackets []
+
+
+`[Aa]`pple 
+
+
+
+--
+
+
+#### - Find all the pairs of vowels in the fruit list.
+
+
+
+.footnote[[Answers in Lecture4](https://pages.github.ubc.ca/mds-2021-22/DSCI_521_platforms-dsci_students/README.html)]
+
+---
+
+## Ranges within []
+
+You can also define ranges when using brackets. 
+
+--
+
+`[A-Z]`: will match any upper case letter  
+`[a-z]`: will match any lower case letter  
+`[0-9]`: will match any digit  
+`[0-5]`: will match any digit between 0 and 5  
+
+--
+
+.footnote[[Order based in ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters)]
+
+---
+
+## Ranges within []
+
+You can use square brackets starting with a caret. 
+
+`[^A-Z]`: will match anything that is not an upper case letter  
+`[^0-9]`: will match anything that is not a digit
+
+
+--
+
+.footnote[Note that the caret needs to be inside the bracket, if it is outside it will match the beginning of a line as described under the "Anchors" section below.]
+
+---
+
+## Ranges within []
+
+You can combine ranges: `[A-Za-z]`
+
+- What is the difference between writing `[A-Za-z]` and `[A-z]`?
+
+--
+
+These ranges are ordered based on ASCI codes where every character is represented by a number. The first character in the list is ` (space) and the last is~` (tilde). The full list is shown below:
+
+####' !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ '
+
+
+- `[A-z]` will also match the characters `[/]^_`, as you can see in the list above.  
 
 
 
 ---
 
 
-## Switch to a branch
-#### `git switch`
+## Special matching characters
 
+**.** can be used to match any character in the list above
 
-##  Switch to a new branch
-#### `git switch -c &lt;name new branch&gt;`
-#### `git switch -c lecture-todo`
+--
 
+To match a .  prefacing it with a backslash \. 
 
-.footnote["It is good practice to give branches a name that succinctly describes the feature that you want to develop."]
----
-
-## Pushing to a new branch
-
-&lt;img src="img/gitpush_newbranch.png" width="700" style="display: block; margin: auto;" /&gt;
-
----
+\w, which matches any character that normally occurs inside a word 
 
 
 
 
 ---
 
+## Anchors
 
+- The ^ (caret) outside the brackets means beginning of line.
+- The dollar sign $ means end of line
+
+&gt; Start with power (^) and end with money ($) 
+&gt; _Jenny Bryan_
+
+
+Another useful anchor is \b, which matches end of word.
+
+---
+
+- Match any characters between two _.
+
+---
+
+## Exercise 4
+Write a regex that will match a line that contains only pineapple. (Hint: you cannot just write pineapple - it will not work - why?)
+
+^pineapple$
+note that if you use just `pineapple`, lines that also contain other words would match too.
+
+---
+
+
+## Repetitions
+
+To match multiple of the same character, you can either repeat it or use the following syntax:
+
+##### {n}: exactly n occurrences
+##### {n,}: at least n occurrences
+##### {0,m}: at most m occurrences
+##### {n,m}: between n and m (inclusive) occurrences
+
+--
+
+1. Find the fruits with names between 10 and 12 characters.
+2. Find the lines with no more than 4 letters
+
+---
+
+
+## Special repetition characters
+
+There are some shortcuts for the most common repetitions:
+#####        ?: means 0 or 1 time ({0,1})
+#####        *: means 0 or more time ({0,})
+#####        +: means 1 or more time ({1,})
+
+For example, apples? will match apple and apples.
+But apples+ will not match apple or appplesq, but it will match apples, appless, applesss, etc.
+
+--
+
+- Find all the words that contain at least two consecutive vowels.
+- This is a bit harder derives from all previous sections: Match entire words that end in _.
+
+\w*_\b
+
+
+---
+
+
+- https://regexr.com/
+        regexr interprets text input as one big string by default, so you need to check "multiline" under "flags" (top right) for it to behave as expected with beginning and end of line matches (it hints at this in the output for both ^ and $).
+- https://regex101.com/
+        regex101 has the "multiline" flag set by default.
+
+
+---
+
+
+
+## Additional exercises
+
+.bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
+
+* Interactive tutorials and practice sessions at https://regexone.com/ that correspond to the topics we have covered during class.
+    
+* The Library Carpentry organization has many regex exercises in all sections of their regex course here https://librarycarpentry.org/lc-data-intro/ (you can just to do the exercises).
+
+]
+
+---
+
+## You can use this when coding
+
+&lt;img src="img/rstudio.png" width="600" style="display: block; margin: auto;" /&gt;
+
+.footnote[[String manipulation with stringr - RStudio Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)]
+---
+
+class: inverse, middle, center
+
+
+## Thank you!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

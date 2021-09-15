@@ -1,6 +1,6 @@
 ---
-title: "DSCI 521 - Lecture 3"
-subtitle: "Branches, forks, and streams... Welcome to the Git nature walk!"  
+title: "DSCI 521 - Lecture 4"
+subtitle: "Syncing with an upstream remote, time travelling with git reset, and pattern matching with regex"  
 author: 
   - "MDS 2021/22"
 output:
@@ -94,8 +94,8 @@ class: middle, center
 class: bottom
 
 .bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
-### DSCI 521 - Lecture 3
-### **Branches, forks, and streams... Welcome to the Git nature walk!**
+### DSCI 521 - Lecture 4
+### **Time travelling with git reset, and pattern matching with regex**
 
  .large[#### Computing Platforms for Data Science - UBC MDS 2021/22
 ]]
@@ -103,149 +103,333 @@ class: bottom
 
 ---
 
-## Lecture 3
+## Lecture 4
 
-1 **Develop a feature on a branch** in a Git repo.
-
---
-
-2. **Merge** the feature branch with the master branch.
+1. Use git reset to move a branch back in the commit history.
 
 --
 
-3. Create a **fork** of an existing GitHub repo.
-
---
-
-4. Open a **pull request** from your forked repo to the upstream repo
+2. Precisely match specific sequences of text strings using regex.
 
 
 ---
-
-
-class: center, middle
-
-```{r obj2, fig.align='center', echo = FALSE,out.width=900} 
-knitr::include_graphics("img/obj2.png")
-```
-
-
-.footnote[[images: Unsplash](https://unsplash.com)]
----
-
 
 class: center, middle, inverse
 
-# BRANCHES
-separate work 
+# TIME TRAVELLING
+### with _git reset_
 
 ---
 
-## Why to use them?
+### Refer to a commit 
 
-* You don't want the repository's default branch to be updated with every commit of a half-finished feature.
+Commit ID or SHA-1 hash
 
-* When features are completed, their branches will be merged into the main branch, often through a "pull request" where code is reviewed before it is merged. 
+```bash
+commit b22d6421363c7b82e2b88b0b5f1f25edca703303
 
+commit b22d
+```
 
+--
 
+## `git log --oneline` 
 
----
-
-
-```{r obj4, fig.align='center', echo = FALSE,out.width=500} 
-knitr::include_graphics("img/branches-house-analogy.png")
+```{r git_log, fig.align='center', echo = FALSE,out.width=700} 
+knitr::include_graphics("img/gitlogid.png")
 ```
 
 
-```{r house2, fig.align='center', echo = FALSE,out.width=500} 
-knitr::include_graphics("img/house.jfif")
+---
+
+### Move to a previous commit
+
+```bash
+git reset <commit id>
 ```
 
-.footnote[[house image: Unsplash](https://unsplash.com)]
+**(1) This command changes the commit history**
+
+.footnote[[Git Docs - Reset, restore and revert](https://git-scm.com/docs/git)]
 
 ---
 
-###
+### What happened to the changes? 
 
-`HEAD -> main`
+**(2) You can edit the changes**
 
-**main** is your default local branch
+We could now make any modification we wish and then commit again 
 
-**HEAD** is where you currently (on the main branch)  
-
-
-
-> You are on the main branch
-
-
----
-
-###
-
-`origin/main`
-
-**origin** is a nickname for your remote repo on GitHub
-
-**origin/main** is the main branch on your GitHub repo
-
-
-> You Github repo is on the main branch
-
-.footnote[_Note: In older repos `main` branch was called `master` branch_]
-
----
-
-`origin/HEAD`
-
-You don't need to care about origin/HEAD, it just point to the default remote branch, 
-which will always be main unless you mess around with the settings on the GitHub webpage.
-
-.footnote[_Note: In older repos `main` branch was called `master` branch_]
-
----
-
-
-## Now all together
-
-Now let's see what happens when we make a commit locally
-
-
-
----
-
-class: center, inverse, middle
-
-# How do we create a branch?
-
-
-
----
-
-
-## Switch to a branch
-#### `git switch`
-
-
-##  Switch to a new branch
-#### `git switch -c <name new branch>`
-#### `git switch -c lecture-todo`
-
-
-.footnote["It is good practice to give branches a name that succinctly describes the feature that you want to develop."]
----
-
-## Pushing to a new branch
-
-```{r branch, fig.align='center', echo = FALSE,out.width=700} 
-knitr::include_graphics("img/gitpush_newbranch.png")
+```{r obj4, fig.align='center', echo = FALSE,out.width=700} 
+knitr::include_graphics("img/reset.png")
 ```
 
----
-
-
 
 
 ---
 
+### What if we want to discard the changes instead of moving them to the working area?
 
+```bash
+git reset --hard <sha>
+```
+It will not show us any message, since the changes are not unstaged, they are **discarded**.
+
+---
+
+class: middle, center, inverse
+
+## SYNCING WITH A REMOTE AFTER RESETTING
+
+
+---
+
+### Git push
+
+##### Git will refuse to push changes when the remote is ahead of the local branch.
+
+
+```{r push, fig.align='center', echo = FALSE,out.width=700} 
+knitr::include_graphics("img/gitpusherror.png")
+```
+
+To override this warning and force git to push to the remote
+we can use the **-f/--force** flag.
+---
+
+## Danger Zone
+
+```bash
+git push -f/--force 
+```
+
+--
+- Should never do this on the `main` branch of a repository that you **share with collaborators** unless you have all discussed this
+
+--
+
+- Everyone else who is using this repository are now **out of sync** with the `main` branch, since you have reset master to a previous state
+
+--
+
+**Safer**
+: If you are working alone and you know what you are doing
+
+
+---
+class: middle, center, inverse
+ 
+# INTRODUCTION TO 
+# REGULAR EXPRESIONS 
+### regex
+
+---
+
+# .*
+
+#### A regular expression, often abbreviated to **regex**, is a method of using a sequence of characters to define a search to match strings, i.e. “find and replace”-like operations. 
+
+
+In computation, a ‘string’ is a contiguous sequence of symbols or values. For example, a word, a date, a set of numbers (e.g., a phone number), or an alphanumeric value (e.g., an identifier).
+
+.footnote[[Library Carpentries](https://librarycarpentry.org/lc-data-intro/01-regular-expressions/)]
+---
+
+## JupyterLab and VS Code have built in regex functionality 
+
+#### VSCode
+
+
+```{r regex, fig.align='center', echo = FALSE,out.width=400} 
+knitr::include_graphics("img/regex.png")
+```
+
+
+
+---
+
+## The square brackets: []
+
+If you want to specify the set of possible characters you can use square brackets []
+
+
+`[Aa]`pple 
+
+
+
+--
+
+
+#### - Find all the pairs of vowels in the fruit list.
+
+
+
+.footnote[[Answers in Lecture4](https://pages.github.ubc.ca/mds-2021-22/DSCI_521_platforms-dsci_students/README.html)]
+
+---
+
+## Ranges within []
+
+You can also define ranges when using brackets. 
+
+--
+
+`[A-Z]`: will match any upper case letter  
+`[a-z]`: will match any lower case letter  
+`[0-9]`: will match any digit  
+`[0-5]`: will match any digit between 0 and 5  
+
+--
+
+.footnote[[Order based in ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters)]
+
+---
+
+## Ranges within []
+
+You can use square brackets starting with a caret. 
+
+`[^A-Z]`: will match anything that is not an upper case letter  
+`[^0-9]`: will match anything that is not a digit
+
+
+--
+
+.footnote[Note that the caret needs to be inside the bracket, if it is outside it will match the beginning of a line as described under the "Anchors" section below.]
+
+---
+
+## Ranges within []
+
+You can combine ranges: `[A-Za-z]`
+
+- What is the difference between writing `[A-Za-z]` and `[A-z]`?
+
+--
+
+These ranges are ordered based on ASCI codes where every character is represented by a number. The first character in the list is ` (space) and the last is~` (tilde). The full list is shown below:
+
+####' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ '
+
+
+- `[A-z]` will also match the characters `[/]^_`, as you can see in the list above.  
+
+
+
+---
+
+
+## Special matching characters
+
+**.** can be used to match any character in the list above
+
+--
+
+To match a .  prefacing it with a backslash \. 
+
+\w, which matches any character that normally occurs inside a word 
+
+
+
+
+---
+
+## Anchors
+
+- The ^ (caret) outside the brackets means beginning of line.
+- The dollar sign $ means end of line
+
+> Start with power (^) and end with money ($) 
+> _Jenny Bryan_
+
+
+Another useful anchor is \b, which matches end of word.
+
+---
+
+- Match any characters between two _.
+
+---
+
+## Exercise 4
+Write a regex that will match a line that contains only pineapple. (Hint: you cannot just write pineapple - it will not work - why?)
+
+^pineapple$
+note that if you use just `pineapple`, lines that also contain other words would match too.
+
+---
+
+
+## Repetitions
+
+To match multiple of the same character, you can either repeat it or use the following syntax:
+
+##### {n}: exactly n occurrences
+##### {n,}: at least n occurrences
+##### {0,m}: at most m occurrences
+##### {n,m}: between n and m (inclusive) occurrences
+
+--
+
+1. Find the fruits with names between 10 and 12 characters.
+2. Find the lines with no more than 4 letters
+
+---
+
+
+## Special repetition characters
+
+There are some shortcuts for the most common repetitions:
+#####        ?: means 0 or 1 time ({0,1})
+#####        *: means 0 or more time ({0,})
+#####        +: means 1 or more time ({1,})
+
+For example, apples? will match apple and apples.
+But apples+ will not match apple or appplesq, but it will match apples, appless, applesss, etc.
+
+--
+
+- Find all the words that contain at least two consecutive vowels.
+- This is a bit harder derives from all previous sections: Match entire words that end in _.
+
+\w*_\b
+
+
+---
+
+
+- https://regexr.com/
+        regexr interprets text input as one big string by default, so you need to check "multiline" under "flags" (top right) for it to behave as expected with beginning and end of line matches (it hints at this in the output for both ^ and $).
+- https://regex101.com/
+        regex101 has the "multiline" flag set by default.
+
+
+---
+
+
+
+## Additional exercises
+
+.bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
+
+* Interactive tutorials and practice sessions at https://regexone.com/ that correspond to the topics we have covered during class.
+    
+* The Library Carpentry organization has many regex exercises in all sections of their regex course here https://librarycarpentry.org/lc-data-intro/ (you can just to do the exercises).
+
+]
+
+---
+
+## You can use this when coding
+
+```{r regexrs, fig.align='center', echo = FALSE,out.width=600} 
+knitr::include_graphics("img/rstudio.png")
+```
+
+.footnote[[String manipulation with stringr - RStudio Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)]
+---
+
+class: inverse, middle, center
+
+
+## Thank you!
