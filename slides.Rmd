@@ -227,10 +227,9 @@ class: middle, center, inverse
 
 # .*
 
-#### A regular expression, often abbreviated to **regex**, is a method of using a sequence of characters to define a search to match strings, i.e. “find and replace”-like operations. 
+### A regular expression, often abbreviated to **regex**, is a method of using a sequence of characters to define a search to match strings, i.e. “find and replace”-like operations. 
 
 
-In computation, a ‘string’ is a contiguous sequence of symbols or values. For example, a word, a date, a set of numbers (e.g., a phone number), or an alphanumeric value (e.g., an identifier).
 
 .footnote[[Library Carpentries](https://librarycarpentry.org/lc-data-intro/01-regular-expressions/)]
 ---
@@ -306,19 +305,18 @@ You can use square brackets starting with a caret.
 ## Ranges within []
 
 You can combine ranges: `[A-Za-z]`.   
-What is the difference between writing
-`[A-Za-z]` and `[A-z]`?
+
+#### - What is the difference between writing `[A-Za-z]` and `[A-z]`?
 
 --
-
-> These ranges are ordered based on ASCI codes where every character is represented by a number.  
-> The first character in the list is  (space) and the last is ~ (tilde). 
-
 
 ```
 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`
 abcdefghijklmnopqrstuvwxyz{|}~ 
 ```
+> These ranges are ordered based on ASCI codes where every character is represented by a number.  
+> The first character in the list is  (space) and the last is ~ (tilde). 
+
 
  `[A-z]` will also match the characters `[/]^_`, as you can see in the list above.  
 
@@ -332,7 +330,8 @@ abcdefghijklmnopqrstuvwxyz{|}~
 
 To match a **.**  prefacing it with a backslash `\.`
 
-`\w`, which matches any character that normally occurs inside a word 
+`\w`, which matches any character that normally occurs   
+inside a word (`[A-Za-z0-9_]`)
 
 
 
@@ -368,33 +367,34 @@ knitr::include_graphics("img/regex.jpg")
 
 To match multiple of the same character, you can either repeat it or use the following syntax:
 
-##### {n}: exactly n occurrences
-##### {n,}: at least n occurrences
-##### {0,m}: at most m occurrences
-##### {n,m}: between n and m (inclusive) occurrences
+`{n}`: exactly n occurrences  
+`{n,}`: at least n occurrences  
+`{0,m}`: at most m occurrences  
+`{n,m}`: between n and m (inclusive) occurrences  
 
 --
 
-1. Find the fruits with names between 10 and 12 characters.
-2. Find the lines with no more than 4 letters
+#### - Find the fruits with names between 10 and 12 characters.
+#### - Find the lines with no more than 4 letters
 
 ---
 
 
 ## Special repetition characters
 
-There are some shortcuts for the most common repetitions:
-#####        ?: means 0 or 1 time ({0,1})
-#####        *: means 0 or more time ({0,})
-#####        +: means 1 or more time ({1,})
+There are some shortcuts for the most common repetitions:  
+  
+`?`: means 0 or 1 time ({0,1})   
+`*`: means 0 or more time ({0,})   
+`+`: means 1 or more time ({1,})  
 
 --
 
-na**?** will match n or na.
+na**?** will match _n_ or _na_.
 
-na***** will match all of n, na, naaa, etc.
+na***** will match all of _n_, _na_, _naaa_, etc.
 
-na**+** will match na or naaaa, for example, but not n.
+na**+** will match _na_ or _naaaa_, for example, but not _n_.
 
 
 
@@ -405,8 +405,18 @@ na**+** will match na or naaaa, for example, but not n.
 - Match any characters between two _.
 - Find all the words that contain at least two consecutive vowels.
 - This is a bit harder derives from all previous sections: Match entire words that end in _.
-\w*_\b
 
+
+.footnote[[Answers in Lecture4](https://pages.github.ubc.ca/mds-2021-22/DSCI_521_platforms-dsci_students/README.html)]
+
+
+---
+
+class: middle, center
+
+```{r 2problems, fig.align='center', echo = FALSE,out.width=700} 
+knitr::include_graphics("img/2problems.jpg")
+```
 
 ---
 
@@ -421,7 +431,6 @@ na**+** will match na or naaaa, for example, but not n.
 ---
 
 
-
 ## Additional exercises
 
 .bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
@@ -434,7 +443,7 @@ na**+** will match na or naaaa, for example, but not n.
 
 ---
 
-## You can use this when coding
+### Regex is often used in programming languages for matching patterns in strings
 
 ```{r regexrs, fig.align='center', echo = FALSE,out.width=600} 
 knitr::include_graphics("img/rstudio.png")
