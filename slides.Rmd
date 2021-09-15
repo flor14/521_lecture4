@@ -236,15 +236,19 @@ In computation, a ‘string’ is a contiguous sequence of symbols or values. Fo
 ---
 
 ## JupyterLab and VS Code have built in regex functionality 
+(Ctrl + F)
+
 
 #### VSCode
 
 
-```{r regex, fig.align='center', echo = FALSE,out.width=400} 
+```{r regex, fig.align='center', echo = FALSE,out.width=500} 
 knitr::include_graphics("img/regex.png")
 ```
-
-
+#### JupyterLab 
+```{r regexjl, fig.align='center', echo = FALSE,out.width=500} 
+knitr::include_graphics("img/jupyterLab.png")
+```
 
 ---
 
@@ -301,23 +305,24 @@ You can use square brackets starting with a caret.
 
 ## Ranges within []
 
-You can combine ranges: `[A-Za-z]`
-
-- What is the difference between writing `[A-Za-z]` and `[A-z]`?
+You can combine ranges: `[A-Za-z]`.   
+What is the difference between writing
+`[A-Za-z]` and `[A-z]`?
 
 --
 
-These ranges are ordered based on ASCI codes where every character is represented by a number. The first character in the list is ` (space) and the last is~` (tilde). The full list is shown below:
-
-####' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ '
-
-
-- `[A-z]` will also match the characters `[/]^_`, as you can see in the list above.  
+> These ranges are ordered based on ASCI codes where every character is represented by a number.  
+> The first character in the list is  (space) and the last is ~ (tilde). 
 
 
+```
+!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`
+abcdefghijklmnopqrstuvwxyz{|}~ 
+```
+
+ `[A-z]` will also match the characters `[/]^_`, as you can see in the list above.  
 
 ---
-
 
 ## Special matching characters
 
@@ -325,9 +330,9 @@ These ranges are ordered based on ASCI codes where every character is represente
 
 --
 
-To match a .  prefacing it with a backslash \. 
+To match a **.**  prefacing it with a backslash `\.`
 
-\w, which matches any character that normally occurs inside a word 
+`\w`, which matches any character that normally occurs inside a word 
 
 
 
@@ -336,26 +341,25 @@ To match a .  prefacing it with a backslash \.
 
 ## Anchors
 
-- The ^ (caret) outside the brackets means beginning of line.
-- The dollar sign $ means end of line
+- The **^** (caret) outside the brackets means beginning of line.
+- The dollar sign **$** means end of line
 
-> Start with power (^) and end with money ($) 
+Another useful anchor is `\b`, which matches end of word.
+
+--
+
+> Start with power (^) and end with money ($)   
 > _Jenny Bryan_
 
 
-Another useful anchor is \b, which matches end of word.
-
 ---
 
-- Match any characters between two _.
 
----
+```{r regexdino, fig.align='center', echo = FALSE,out.width=500} 
+knitr::include_graphics("img/regex.jpg")
+```
 
-## Exercise 4
-Write a regex that will match a line that contains only pineapple. (Hint: you cannot just write pineapple - it will not work - why?)
 
-^pineapple$
-note that if you use just `pineapple`, lines that also contain other words would match too.
 
 ---
 
@@ -384,26 +388,36 @@ There are some shortcuts for the most common repetitions:
 #####        *: means 0 or more time ({0,})
 #####        +: means 1 or more time ({1,})
 
-For example, apples? will match apple and apples.
-But apples+ will not match apple or appplesq, but it will match apples, appless, applesss, etc.
-
 --
 
+na**?** will match n or na.
+
+na***** will match all of n, na, naaa, etc.
+
+na**+** will match na or naaaa, for example, but not n.
+
+
+
+---
+
+## Some practice
+
+- Match any characters between two _.
 - Find all the words that contain at least two consecutive vowels.
 - This is a bit harder derives from all previous sections: Match entire words that end in _.
-
 \w*_\b
 
 
 ---
 
+## Additional exercises
 
-- https://regexr.com/
-        regexr interprets text input as one big string by default, so you need to check "multiline" under "flags" (top right) for it to behave as expected with beginning and end of line matches (it hints at this in the output for both ^ and $).
+.bg-washed-blue.b--dark-blue.ba.bw2.br3.shadow-5.ph4.mt5[
+
+- https://regexr.com/    
 - https://regex101.com/
-        regex101 has the "multiline" flag set by default.
-
-
+   
+]
 ---
 
 
@@ -427,6 +441,7 @@ knitr::include_graphics("img/rstudio.png")
 ```
 
 .footnote[[String manipulation with stringr - RStudio Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)]
+
 ---
 
 class: inverse, middle, center
